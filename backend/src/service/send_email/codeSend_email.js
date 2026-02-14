@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { template } from '../../template/codeHtmlEmail.js';
 import dotenv from 'dotenv';
 
 dotenv.config({
@@ -20,22 +21,24 @@ const transport = nodemailer.createTransport({
 }
 });
 
-export async function SendEmail(email) {
+export async function SendEmail(email, code) {
 
     transport.sendMail({
     from: process.env.USER,
-    to: email, //
+    to: email,
     subject: 'teste de envio',
-    html: `<h1>Olá mundo ${email} </h1>`,
+    html: template(code),
     text: 'Olá mundo'
 })
 .then(info => {
-    console.log('Email enviado:', info.messageId);
+    console.log('Email enviado:');
 })
 .catch(err => {
     console.error('Erro ao enviar email:', err);
 });
   
 }
+
+const sla = "1234"
 const gmail = "railanrailan080@gmail.com"
-SendEmail(gmail)
+SendEmail(gmail, sla)
